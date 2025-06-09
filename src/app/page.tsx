@@ -122,7 +122,7 @@ const TabNavigation = ({ activeTab, setActiveTab }: { activeTab: string; setActi
 
   return (
     <div className="flex justify-center mb-6 sm:mb-8 overflow-x-auto">
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 flex flex-nowrap">
+      <div className="bg-purple-900/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 flex flex-nowrap">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -145,7 +145,7 @@ const TabNavigation = ({ activeTab, setActiveTab }: { activeTab: string; setActi
 // Hourly Forecast Component
 const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
   const [scrollIndex, setScrollIndex] = useState(0);
-  const itemsToShow = 3; // Reduced for mobile
+  const itemsToShow = 3;
 
   const nextSlide = () => {
     setScrollIndex((prev) => (prev + 1) % Math.max(1, forecast.length - itemsToShow + 1));
@@ -156,7 +156,7 @@ const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
   };
 
   return (
-    <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+    <div className="relative bg-purple-900/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
       <div className="flex items-center justify-between mb-4 sm:mb-6">
         <h3 className="text-xl sm:text-2xl font-bold text-white">24-Hour Forecast</h3>
         <div className="flex gap-2">
@@ -179,7 +179,7 @@ const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
         {forecast.slice(scrollIndex, scrollIndex + itemsToShow).map((hour, index) => (
           <div
             key={index}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center hover:scale-105 transition-all duration-300 border border-white/20"
+            className="bg-purple-900/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center hover:scale-105 transition-all duration-300 border border-white/20"
           >
             <div className="text-white/70 text-xs sm:text-sm mb-2">{hour.time}</div>
             <div className="flex justify-center mb-2 sm:mb-3">
@@ -201,14 +201,14 @@ const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
 // Daily Forecast Component
 const DailyForecast = ({ forecast }: { forecast: DailyForecast[] }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+    <div className="bg-purple-900/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
       <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">7-Day Forecast</h3>
       
       <div className="space-y-3 sm:space-y-4">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between hover:scale-[1.02] transition-all duration-300 border border-white/20"
+            className="bg-purple-900/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between hover:scale-[1.02] transition-all duration-300 border border-white/20"
           >
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
               <WeatherIcon3D weatherMain={day.main} size="medium" />
@@ -255,7 +255,7 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
   ];
 
   return (
-    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+    <div className="bg-purple-900/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
       <div className="flex flex-col gap-4 sm:gap-6">
         {/* Map Controls */}
         <div>
@@ -268,7 +268,7 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
                 className={`w-full sm:w-auto p-2 sm:p-3 rounded-xl text-left transition-all duration-300 text-sm sm:text-base ${
                   mapLayer === layer.id
                     ? `bg-gradient-to-r ${layer.color} text-white shadow-lg`
-                    : 'bg-white/10 text-white/70 hover:bg-white/20'
+                    : 'bg-purple-900/10 text-white/70 hover:bg-white/20'
                 }`}
               >
                 {layer.label}
@@ -276,7 +276,7 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
             ))}
           </div>
           
-          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-white/10 rounded-xl border border-white/20">
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-purple-900/10 rounded-xl border border-white/20">
             <h4 className="text-white font-semibold text-base sm:text-lg mb-2">Location</h4>
             <p className="text-white/70 text-xs sm:text-sm">{city}</p>
             <p className="text-white/60 text-xs mt-1">
@@ -462,16 +462,12 @@ export default function Home() {
   }, [fetchWeather]);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+      <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 via-purple-500/20 to-cyan-500/20 animate-pulse"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
       </div>
-      
-      {/* Floating Particles */}
       <FloatingParticles />
-      
       <div className="relative z-10 min-h-screen p-2 sm:p-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -501,7 +497,6 @@ export default function Home() {
                   />
                 </div>
               </div>
-              
               {/* Location Button */}
               <button
                 type="button"
@@ -514,7 +509,6 @@ export default function Home() {
                   <Navigation className={`w-5 h-5 sm:w-6 sm:h-6 ${locationLoading ? 'animate-spin' : ''}`} />
                 </div>
               </button>
-              
               {/* Search Button */}
               <button
                 type="submit"
@@ -550,9 +544,8 @@ export default function Home() {
               {activeTab === 'current' && (
                 <div className="relative">
                   {/* Current Weather Card */}
-                  <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8 mb-6 sm:mb-8">
+                  <div className="relative bg-purple-900/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8 mb-6 sm:mb-8">
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent rounded-3xl"></div>
-                    
                     {/* Main Weather Info */}
                     <div className="relative text-center mb-8 sm:mb-12">
                       <div className="flex items-center justify-center mb-4 sm:mb-6">
@@ -561,7 +554,6 @@ export default function Home() {
                           {weatherData.name}, {weatherData.country}
                         </h2>
                       </div>
-                      
                       <div className="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-8">
                         <div className="mb-4 sm:mb-0 sm:mr-6 sm:mr-8">
                           <WeatherIcon3D weatherMain={weatherData.main} size="large" />
@@ -590,7 +582,7 @@ export default function Home() {
                       ].map((item, index) => (
                         <div key={index} className="group relative">
                           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-2xl blur-sm group-hover:blur-none transition-all duration-300"></div>
-                          <div className="relative bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-white/20 text-center hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                          <div className="relative bg-purple-900/10 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-white/20 text-center hover:scale-105 transition-all duration-300 hover:shadow-2xl">
                             <div className={`w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 p-2 sm:p-3 bg-gradient-to-br ${item.color} rounded-xl shadow-lg`}>
                               <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                             </div>
