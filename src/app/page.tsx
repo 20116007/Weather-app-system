@@ -243,7 +243,7 @@ const DailyForecast = ({ forecast }: { forecast: DailyForecast[] }) => {
   );
 };
 
-// Weather Map Component
+// Weather Map Component - Updated for better mobile view
 const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string }) => {
   const [mapLayer, setMapLayer] = useState('temp');
   
@@ -285,20 +285,25 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
           </div>
         </div>
         
-        {/* Map Display */}
+        {/* Map Display - Updated for mobile */}
         <div>
-          <div className="relative bg-white/5 rounded-2xl border border-white/20 h-64 sm:h-96 overflow-hidden">
+          <div className="relative bg-white/5 rounded-2xl border border-white/20 h-[300px] sm:h-[500px] w-full overflow-hidden">
             <iframe
               src={`https://openweathermap.org/weathermap?basemap=map&cities=false&layer=${mapLayer}&lat=${lat}&lon=${lon}&zoom=8`}
-              className="w-full h-full rounded-2xl"
+              className="absolute top-0 left-0 w-full h-full rounded-2xl"
               style={{ border: 'none' }}
               title="Weather Map"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             />
             <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-black/50 backdrop-blur-md rounded-lg p-2 sm:p-3">
               <div className="text-white text-xs sm:text-sm font-medium">
                 {mapLayers.find(l => l.id === mapLayer)?.label} Layer
               </div>
             </div>
+          </div>
+          <div className="mt-2 text-xs text-white/50 text-center">
+            <p>Scroll and zoom on the map to explore weather patterns</p>
           </div>
         </div>
       </div>
