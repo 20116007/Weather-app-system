@@ -1,8 +1,7 @@
-// app/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Search, MapPin, Thermometer, Droplets, Wind, Eye, Gauge, Navigation, Sun, Cloud, CloudRain, CloudSnow, Zap, Calendar, Clock, Map, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, MapPin, Thermometer, Droplets, Wind, Eye, Navigation, Sun, Cloud, CloudRain, CloudSnow, Zap, Calendar, Clock, Map, ChevronLeft, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 
 interface WeatherData {
@@ -38,6 +37,21 @@ interface DailyForecast {
   icon: string;
   main: string;
   description: string;
+  humidity: number;
+  windSpeed: number;
+}
+
+interface ForecastItem {
+  dt: number;
+  main: { temp: number; humidity: number };
+  weather: { icon: string; main: string; description: string }[];
+  wind: { speed: number };
+}
+
+interface DailyData {
+  date: string;
+  temps: number[];
+  weather: { icon: string; main: string; description: string };
   humidity: number;
   windSpeed: number;
 }
@@ -347,7 +361,7 @@ export default function Home() {
       });
 
       // Process hourly forecast (next 24 hours)
-      const hourlyData = forecastData.list.slice(0, 8).map((item: any) => ({
+      const hourlyData = forecastData.list.slice(0, 8).map((item: ForecastItem) => ({
         time: new Date(item.dt * 1000).toLocaleTimeString('en-US', { 
           hour: 'numeric', 
           hour12: true 
@@ -362,8 +376,8 @@ export default function Home() {
       setHourlyForecast(hourlyData);
 
       // Process daily forecast (next 7 days)
-      const dailyData: { [key: string]: any } = {};
-      forecastData.list.forEach((item: any) => {
+      const dailyData: { [key: string]: DailyData } = {};
+      forecastData.list.forEach((item: ForecastItem) => {
         const date = new Date(item.dt * 1000).toDateString();
         if (!dailyData[date]) {
           dailyData[date] = {
@@ -381,7 +395,7 @@ export default function Home() {
         dailyData[date].temps.push(item.main.temp);
       });
 
-      const processedDailyData = Object.values(dailyData).slice(0, 7).map((day: any) => ({
+      const processedDailyData = Object.values(dailyData).slice(0, 7).map((day: DailyData) => ({
         date: day.date,
         tempMax: Math.round(Math.max(...day.temps)),
         tempMin: Math.round(Math.min(...day.temps)),
@@ -393,7 +407,7 @@ export default function Home() {
       }));
       setDailyForecast(processedDailyData);
 
-    } catch (err) {
+    } catch {
       setError('Unable to fetch weather data. Please try again.');
       setWeatherData(null);
       setHourlyForecast([]);
@@ -403,10 +417,10 @@ export default function Home() {
     }
   };
 
-  const fetchWeather = async (cityName: string) => {
+  const fetchWeather = useCallback(async (cityName: string) => {
     if (!cityName.trim()) return;
     await fetchAllWeatherData(cityName);
-  };
+  }, []);
 
   const fetchWeatherByCoords = async (lat: number, lon: number) => {
     setLocationLoading(true);
@@ -418,7 +432,7 @@ export default function Home() {
       if (weatherData) {
         setCity(weatherData.name);
       }
-    } catch (err) {
+    } catch {
       setError('Unable to fetch weather for your location.');
     } finally {
       setLocationLoading(false);
@@ -436,7 +450,7 @@ export default function Home() {
         const { latitude, longitude } = position.coords;
         fetchWeatherByCoords(latitude, longitude);
       },
-      (error) => {
+      () => {
         setError('Unable to retrieve your location. Please allow location access.');
         setLocationLoading(false);
       }
@@ -451,7 +465,7 @@ export default function Home() {
   // Fetch weather for a default city on component mount
   useEffect(() => {
     fetchWeather('London');
-  }, []);
+  }, [fetchWeather]);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
