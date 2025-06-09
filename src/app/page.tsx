@@ -59,9 +59,9 @@ interface DailyData {
 // 3D Weather Icon Component
 const WeatherIcon3D = ({ weatherMain, size = 'large' }: { weatherMain: string; size?: 'small' | 'medium' | 'large' }) => {
   const sizeClass = {
-    small: 'w-8 h-8',
-    medium: 'w-16 h-16',
-    large: 'w-32 h-32'
+    small: 'w-6 h-6 sm:w-8 sm:h-8',
+    medium: 'w-12 h-12 sm:w-16 sm:h-16',
+    large: 'w-24 h-24 sm:w-32 sm:h-32'
   }[size];
   
   const animationClass = 'animate-bounce';
@@ -98,7 +98,7 @@ const FloatingParticles = () => {
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse"
+          className="absolute w-1 h-1 sm:w-2 sm:h-2 bg-white/20 rounded-full animate-pulse"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -121,19 +121,19 @@ const TabNavigation = ({ activeTab, setActiveTab }: { activeTab: string; setActi
   ];
 
   return (
-    <div className="flex justify-center mb-8">
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20">
+    <div className="flex justify-center mb-6 sm:mb-8 overflow-x-auto">
+      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 flex flex-nowrap">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`relative px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 ${
+            className={`relative px-3 py-2 sm:px-6 sm:py-3 rounded-xl font-medium transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg'
                 : 'text-white/70 hover:text-white hover:bg-white/10'
             }`}
           >
-            <tab.icon className="w-5 h-5" />
+            <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
             {tab.label}
           </button>
         ))}
@@ -145,7 +145,7 @@ const TabNavigation = ({ activeTab, setActiveTab }: { activeTab: string; setActi
 // Hourly Forecast Component
 const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
   const [scrollIndex, setScrollIndex] = useState(0);
-  const itemsToShow = 6;
+  const itemsToShow = 3; // Reduced for mobile
 
   const nextSlide = () => {
     setScrollIndex((prev) => (prev + 1) % Math.max(1, forecast.length - itemsToShow + 1));
@@ -156,36 +156,36 @@ const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
   };
 
   return (
-    <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-8">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-white">24-Hour Forecast</h3>
+    <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
+        <h3 className="text-xl sm:text-2xl font-bold text-white">24-Hour Forecast</h3>
         <div className="flex gap-2">
           <button
             onClick={prevSlide}
             className="p-2 bg-white/20 hover:bg-white/30 rounded-xl transition-all duration-300"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
           <button
             onClick={nextSlide}
             className="p-2 bg-white/20 hover:bg-white/30 rounded-xl transition-all duration-300"
           >
-            <ChevronRight className="w-5 h-5 text-white" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
         </div>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-4">
         {forecast.slice(scrollIndex, scrollIndex + itemsToShow).map((hour, index) => (
           <div
             key={index}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 text-center hover:scale-105 transition-all duration-300 border border-white/20"
+            className="bg-white/10 backdrop-blur-md rounded-2xl p-3 sm:p-4 text-center hover:scale-105 transition-all duration-300 border border-white/20"
           >
-            <div className="text-white/70 text-sm mb-2">{hour.time}</div>
-            <div className="flex justify-center mb-3">
+            <div className="text-white/70 text-xs sm:text-sm mb-2">{hour.time}</div>
+            <div className="flex justify-center mb-2 sm:mb-3">
               <WeatherIcon3D weatherMain={hour.main} size="small" />
             </div>
-            <div className="text-xl font-bold text-white mb-1">{hour.temp}°</div>
+            <div className="text-lg sm:text-xl font-bold text-white mb-1">{hour.temp}°</div>
             <div className="text-white/60 text-xs capitalize">{hour.description}</div>
             <div className="text-white/50 text-xs mt-2">
               <div>💧 {hour.humidity}%</div>
@@ -201,39 +201,39 @@ const HourlyForecast = ({ forecast }: { forecast: HourlyForecast[] }) => {
 // Daily Forecast Component
 const DailyForecast = ({ forecast }: { forecast: DailyForecast[] }) => {
   return (
-    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-8">
-      <h3 className="text-2xl font-bold text-white mb-6">7-Day Forecast</h3>
+    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+      <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">7-Day Forecast</h3>
       
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {forecast.map((day, index) => (
           <div
             key={index}
-            className="bg-white/10 backdrop-blur-md rounded-2xl p-6 flex items-center justify-between hover:scale-[1.02] transition-all duration-300 border border-white/20"
+            className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between hover:scale-[1.02] transition-all duration-300 border border-white/20"
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
               <WeatherIcon3D weatherMain={day.main} size="medium" />
               <div>
-                <div className="text-white font-semibold text-lg">{day.date}</div>
-                <div className="text-white/70 capitalize">{day.description}</div>
+                <div className="text-white font-semibold text-base sm:text-lg">{day.date}</div>
+                <div className="text-white/70 capitalize text-sm sm:text-base">{day.description}</div>
               </div>
             </div>
             
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 sm:gap-8 mt-4 sm:mt-0 w-full sm:w-auto justify-between sm:justify-start">
               <div className="text-center">
-                <div className="text-white/60 text-sm">High</div>
-                <div className="text-white font-bold text-xl">{day.tempMax}°</div>
+                <div className="text-white/60 text-xs sm:text-sm">High</div>
+                <div className="text-white font-bold text-lg sm:text-xl">{day.tempMax}°</div>
               </div>
               <div className="text-center">
-                <div className="text-white/60 text-sm">Low</div>
-                <div className="text-white/70 font-semibold text-lg">{day.tempMin}°</div>
+                <div className="text-white/60 text-xs sm:text-sm">Low</div>
+                <div className="text-white/70 font-semibold text-base sm:text-lg">{day.tempMin}°</div>
               </div>
               <div className="text-center">
-                <div className="text-white/60 text-sm">Humidity</div>
-                <div className="text-white/70 text-sm">{day.humidity}%</div>
+                <div className="text-white/60 text-xs sm:text-sm">Humidity</div>
+                <div className="text-white/70 text-xs sm:text-sm">{day.humidity}%</div>
               </div>
               <div className="text-center">
-                <div className="text-white/60 text-sm">Wind</div>
-                <div className="text-white/70 text-sm">{day.windSpeed}m/s</div>
+                <div className="text-white/60 text-xs sm:text-sm">Wind</div>
+                <div className="text-white/70 text-xs sm:text-sm">{day.windSpeed}m/s</div>
               </div>
             </div>
           </div>
@@ -255,17 +255,17 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
   ];
 
   return (
-    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-8">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8">
+      <div className="flex flex-col gap-4 sm:gap-6">
         {/* Map Controls */}
-        <div className="lg:w-1/4">
-          <h3 className="text-2xl font-bold text-white mb-6">Weather Map</h3>
-          <div className="space-y-3">
+        <div>
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Weather Map</h3>
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:flex sm:flex-wrap">
             {mapLayers.map((layer) => (
               <button
                 key={layer.id}
                 onClick={() => setMapLayer(layer.id)}
-                className={`w-full p-3 rounded-xl text-left transition-all duration-300 ${
+                className={`w-full sm:w-auto p-2 sm:p-3 rounded-xl text-left transition-all duration-300 text-sm sm:text-base ${
                   mapLayer === layer.id
                     ? `bg-gradient-to-r ${layer.color} text-white shadow-lg`
                     : 'bg-white/10 text-white/70 hover:bg-white/20'
@@ -276,9 +276,9 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
             ))}
           </div>
           
-          <div className="mt-6 p-4 bg-white/10 rounded-xl border border-white/20">
-            <h4 className="text-white font-semibold mb-2">Location</h4>
-            <p className="text-white/70 text-sm">{city}</p>
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-white/10 rounded-xl border border-white/20">
+            <h4 className="text-white font-semibold text-base sm:text-lg mb-2">Location</h4>
+            <p className="text-white/70 text-xs sm:text-sm">{city}</p>
             <p className="text-white/60 text-xs mt-1">
               Lat: {lat.toFixed(4)}, Lon: {lon.toFixed(4)}
             </p>
@@ -286,16 +286,16 @@ const WeatherMap = ({ lat, lon, city }: { lat: number; lon: number; city: string
         </div>
         
         {/* Map Display */}
-        <div className="lg:w-3/4">
-          <div className="relative bg-white/5 rounded-2xl border border-white/20 h-96 lg:h-[500px] overflow-hidden">
+        <div>
+          <div className="relative bg-white/5 rounded-2xl border border-white/20 h-64 sm:h-96 overflow-hidden">
             <iframe
               src={`https://openweathermap.org/weathermap?basemap=map&cities=false&layer=${mapLayer}&lat=${lat}&lon=${lon}&zoom=8`}
               className="w-full h-full rounded-2xl"
               style={{ border: 'none' }}
               title="Weather Map"
             />
-            <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-md rounded-lg p-3">
-              <div className="text-white text-sm font-medium">
+            <div className="absolute top-3 sm:top-4 left-3 sm:left-4 bg-black/50 backdrop-blur-md rounded-lg p-2 sm:p-3">
+              <div className="text-white text-xs sm:text-sm font-medium">
                 {mapLayers.find(l => l.id === mapLayer)?.label} Layer
               </div>
             </div>
@@ -334,7 +334,6 @@ export default function Home() {
         forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric`;
       }
 
-      // Fetch current weather and forecast data
       const [currentResponse, forecastResponse] = await Promise.all([
         axios.get(currentWeatherUrl),
         axios.get(forecastUrl)
@@ -343,7 +342,6 @@ export default function Home() {
       const currentData = currentResponse.data;
       const forecastData = forecastResponse.data;
       
-      // Set current weather data
       setWeatherData({
         name: currentData.name,
         country: currentData.sys.country,
@@ -360,7 +358,6 @@ export default function Home() {
         lon: currentData.coord.lon
       });
 
-      // Process hourly forecast (next 24 hours)
       const hourlyData = forecastData.list.slice(0, 8).map((item: ForecastItem) => ({
         time: new Date(item.dt * 1000).toLocaleTimeString('en-US', { 
           hour: 'numeric', 
@@ -375,7 +372,6 @@ export default function Home() {
       }));
       setHourlyForecast(hourlyData);
 
-      // Process daily forecast (next 7 days)
       const dailyData: { [key: string]: DailyData } = {};
       forecastData.list.forEach((item: ForecastItem) => {
         const date = new Date(item.dt * 1000).toDateString();
@@ -428,7 +424,6 @@ export default function Home() {
     
     try {
       await fetchAllWeatherData('', lat, lon);
-      // Update city name in search field
       if (weatherData) {
         setCity(weatherData.name);
       }
@@ -462,7 +457,6 @@ export default function Home() {
     fetchWeather(city);
   };
 
-  // Fetch weather for a default city on component mount
   useEffect(() => {
     fetchWeather('London');
   }, [fetchWeather]);
@@ -478,32 +472,32 @@ export default function Home() {
       {/* Floating Particles */}
       <FloatingParticles />
       
-      <div className="relative z-10 min-h-screen p-4">
+      <div className="relative z-10 min-h-screen p-2 sm:p-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-12 pt-8">
+          <div className="text-center mb-8 sm:mb-12 pt-6 sm:pt-8">
             <div className="relative inline-block">
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent mb-4 drop-shadow-2xl">
+              <h1 className="text-4xl sm:text-6xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent mb-4 drop-shadow-2xl">
                 Weather Universe
               </h1>
               <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-2xl rounded-full"></div>
             </div>
-            <p className="text-xl text-blue-100/80 font-light">Complete weather forecast with interactive maps</p>
+            <p className="text-base sm:text-xl text-blue-100/80 font-light">Complete weather forecast with interactive maps</p>
           </div>
 
           {/* Enhanced Search Form */}
-          <form onSubmit={handleSubmit} className="mb-12">
-            <div className="flex gap-4 max-w-2xl mx-auto">
+          <form onSubmit={handleSubmit} className="mb-8 sm:mb-12">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 max-w-2xl mx-auto">
               <div className="relative flex-1">
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl blur-sm"></div>
                 <div className="relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl">
-                  <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-white/70 w-6 h-6" />
+                  <Search className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white/70 w-5 h-5 sm:w-6 sm:h-6" />
                   <input
                     type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     placeholder="Enter city name..."
-                    className="w-full pl-16 pr-6 py-5 bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500/50 rounded-2xl text-lg"
+                    className="w-full pl-12 sm:pl-16 pr-4 sm:pr-6 py-4 sm:py-5 bg-transparent text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500/50 rounded-2xl text-base sm:text-lg"
                   />
                 </div>
               </div>
@@ -513,11 +507,11 @@ export default function Home() {
                 type="button"
                 onClick={getCurrentLocation}
                 disabled={locationLoading}
-                className="relative group px-6 py-5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl font-semibold text-white shadow-2xl hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
+                className="relative group px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl font-semibold text-white shadow-2xl hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-purple-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative flex items-center">
-                  <Navigation className={`w-6 h-6 ${locationLoading ? 'animate-spin' : ''}`} />
+                <div className="relative flex items-center justify-center">
+                  <Navigation className={`w-5 h-5 sm:w-6 sm:h-6 ${locationLoading ? 'animate-spin' : ''}`} />
                 </div>
               </button>
               
@@ -525,7 +519,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="relative group px-8 py-5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl font-semibold text-white shadow-2xl hover:shadow-pink-500/25 focus:outline-none focus:ring-2 focus:ring-pink-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
+                className="relative group px-6 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl font-semibold text-white shadow-2xl hover:shadow-pink-500/25 focus:outline-none focus:ring-2 focus:ring-pink-500/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 hover:scale-105"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative">
@@ -537,11 +531,11 @@ export default function Home() {
 
           {/* Error Message */}
           {error && (
-            <div className="max-w-2xl mx-auto mb-8">
-              <div className="bg-red-500/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-2xl p-6 shadow-2xl">
+            <div className="max-w-2xl mx-auto mb-6 sm:mb-8">
+              <div className="bg-red-500/20 backdrop-blur-md border border-red-500/30 text-red-100 rounded-2xl p-4 sm:p-6 shadow-2xl">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-red-500 rounded-full mr-3 animate-pulse"></div>
-                  {error}
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full mr-2 sm:mr-3 animate-pulse"></div>
+                  <span className="text-sm sm:text-base">{error}</span>
                 </div>
               </div>
             </div>
@@ -552,34 +546,34 @@ export default function Home() {
 
           {/* Content Based on Active Tab */}
           {weatherData && (
-            <div className="mb-12">
+            <div className="mb-8 sm:mb-12">
               {activeTab === 'current' && (
                 <div className="relative">
                   {/* Current Weather Card */}
-                  <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-8 mb-8">
+                  <div className="relative bg-white/10 backdrop-blur-2xl rounded-3xl border border-white/20 shadow-2xl p-4 sm:p-8 mb-6 sm:mb-8">
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-transparent rounded-3xl"></div>
                     
                     {/* Main Weather Info */}
-                    <div className="relative text-center mb-12">
-                      <div className="flex items-center justify-center mb-6">
-                        <MapPin className="w-6 h-6 text-white/70 mr-3" />
-                        <h2 className="text-3xl font-bold text-white">
+                    <div className="relative text-center mb-8 sm:mb-12">
+                      <div className="flex items-center justify-center mb-4 sm:mb-6">
+                        <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white/70 mr-2 sm:mr-3" />
+                        <h2 className="text-2xl sm:text-3xl font-bold text-white">
                           {weatherData.name}, {weatherData.country}
                         </h2>
                       </div>
                       
-                      <div className="flex items-center justify-center mb-8">
-                        <div className="mr-8">
+                      <div className="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-8">
+                        <div className="mb-4 sm:mb-0 sm:mr-6 sm:mr-8">
                           <WeatherIcon3D weatherMain={weatherData.main} size="large" />
                         </div>
                         <div className="text-left">
-                          <div className="text-7xl font-bold text-white drop-shadow-2xl mb-2">
+                          <div className="text-5xl sm:text-7xl font-bold text-white drop-shadow-2xl mb-2">
                             {weatherData.temperature}°
                           </div>
-                          <div className="text-white/80 capitalize text-2xl font-light">
+                          <div className="text-white/80 capitalize text-lg sm:text-2xl font-light">
                             {weatherData.description}
                           </div>
-                          <div className="text-white/60 text-lg mt-2">
+                          <div className="text-white/60 text-base sm:text-lg mt-2">
                             Feels like {weatherData.feelsLike}°C
                           </div>
                         </div>
@@ -587,7 +581,7 @@ export default function Home() {
                     </div>
 
                     {/* Enhanced Weather Details Grid */}
-                    <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="relative grid grid-cols-2 gap-4 sm:gap-6">
                       {[
                         { icon: Thermometer, label: 'Feels Like', value: `${weatherData.feelsLike}°C`, color: 'from-orange-500 to-red-500' },
                         { icon: Droplets, label: 'Humidity', value: `${weatherData.humidity}%`, color: 'from-blue-500 to-cyan-500' },
@@ -596,12 +590,12 @@ export default function Home() {
                       ].map((item, index) => (
                         <div key={index} className="group relative">
                           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-2xl blur-sm group-hover:blur-none transition-all duration-300"></div>
-                          <div className="relative bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                            <div className={`w-12 h-12 mx-auto mb-4 p-3 bg-gradient-to-br ${item.color} rounded-xl shadow-lg`}>
-                              <item.icon className="w-6 h-6 text-white" />
+                          <div className="relative bg-white/10 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-white/20 text-center hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                            <div className={`w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 p-2 sm:p-3 bg-gradient-to-br ${item.color} rounded-xl shadow-lg`}>
+                              <item.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                             </div>
-                            <div className="text-sm text-white/70 mb-2 font-medium">{item.label}</div>
-                            <div className="text-2xl font-bold text-white drop-shadow-lg">
+                            <div className="text-xs sm:text-sm text-white/70 mb-2 font-medium">{item.label}</div>
+                            <div className="text-lg sm:text-2xl font-bold text-white drop-shadow-lg">
                               {item.value}
                             </div>
                           </div>
@@ -627,10 +621,10 @@ export default function Home() {
           )}
 
           {/* Enhanced Footer */}
-          <div className="text-center text-white/60 pb-8">
+          <div className="text-center text-white/60 pb-6 sm:pb-8">
             <div className="relative inline-block">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 blur-xl rounded-full"></div>
-              <p className="relative text-lg font-light">
+              <p className="relative text-sm sm:text-lg font-light">
                 Advanced Weather App with Forecasts & Maps • Built with Next.js & OpenWeatherMap
               </p>
             </div>
