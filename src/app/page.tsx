@@ -422,7 +422,7 @@ export default function Home() {
   const fetchWeather = useCallback(async (cityName: string) => {
     if (!cityName.trim()) return;
     await fetchAllWeatherData(cityName);
-  }, []);
+  }, [API_KEY]); // Add API_KEY as dependency since fetchAllWeatherData uses it
 
   const fetchWeatherByCoords = async (lat: number, lon: number) => {
     setLocationLoading(true);
