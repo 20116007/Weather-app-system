@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, MapPin, Thermometer, Droplets, Wind, Eye, Navigation, Sun, Cloud, CloudRain, CloudSnow, Zap, Calendar, Clock, Map, ChevronLeft, ChevronRight } from 'lucide-react';
 import axios from 'axios';
+import UserHeader from '../../components/UserHeader';
 
 interface WeatherData {
   name: string;
@@ -473,6 +474,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
       </div>
       <FloatingParticles />
+      
+      {/* User Header Component */}
+      <UserHeader />
+      
       <div className="relative z-10 min-h-screen p-2 sm:p-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
