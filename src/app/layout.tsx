@@ -1,40 +1,27 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import NextAuthSessionProvider from "../../components/SessionProvider";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import SessionProvider from '../../components/SessionProvider'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: "Weather Universe",
-  description: "An advanced weather app with forecasts and interactive maps, built with Next.js and OpenWeatherMap",
-};
+  title: 'Weather Universe - Advanced Weather Forecasting',
+  description: 'Complete weather forecast with interactive maps and detailed analytics',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900`}
-      >
-        <NextAuthSessionProvider>
+      <body className={inter.className}>
+        <SessionProvider>
           {children}
-        </NextAuthSessionProvider>
+        </SessionProvider>
       </body>
     </html>
-  );
+  )
 }
